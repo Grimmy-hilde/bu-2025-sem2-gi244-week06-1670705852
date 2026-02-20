@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class WaveSpawnManagerExam04 : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class WaveSpawnManagerExam04 : MonoBehaviour
     void Start()
     {
         waveController.StartWave(waveConfigurations[currentWave]);
+        waveEndTime = Time.time + waveConfigurations[currentWave].waveInterval;
     }
 
     void Update()
@@ -41,7 +43,20 @@ public class WaveSpawnManagerExam04 : MonoBehaviour
             }
             else if (enableWaveCycling == true)
             {
-                currentWave = 0;
+                if (currentWave >= waveConfigurations.Length)
+                {
+                    Debug.Log("All waves completed!");
+                    Debug.Log("Star Again");
+                    currentWave = 0;
+                    waveController.StartWave(waveConfigurations[currentWave]);
+                    waveEndTime = Time.time + waveConfigurations[currentWave].waveInterval;
+                }
+                else
+                {
+                    waveController.StartWave(waveConfigurations[currentWave]);
+                    waveEndTime = Time.time + waveConfigurations[currentWave].waveInterval;
+                }
+
             }
         }
     }
