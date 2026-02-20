@@ -12,6 +12,8 @@ public class PlayerControllerExam05 : MonoBehaviour
     public int maxBulletCount = 10;
     public float bulletRegenerateCooldown = 1f;
     // ...
+    int bulletcur = 0;
+    float rel = 5f;
 
     private float horizontalInput;
     private InputAction moveAction;
@@ -38,9 +40,25 @@ public class PlayerControllerExam05 : MonoBehaviour
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
         }
 
+        if (bulletcur >= maxBulletCount)
+        {
+            if (Time.time > rel) 
+            { 
+                bulletcur = 0; 
+            }
+        }
+
         if (shootAction.triggered)
         {
-            Instantiate(projectilePrefab, transform.position, transform.rotation);
+            if (bulletcur <= maxBulletCount)
+            {
+                Instantiate(projectilePrefab, transform.position, transform.rotation);
+                bulletcur = bulletcur + 1;
+            }
+            else if (bulletcur >= maxBulletCount)
+            {
+                rel = Time.time + bulletRegenerateCooldown;
+            }
         }
     }
 }
